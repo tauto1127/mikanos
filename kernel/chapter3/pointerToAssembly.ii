@@ -1,0 +1,14 @@
+# 1 "pointerToAssembly.cpp"
+# 1 "<built-in>" 1
+# 1 "<built-in>" 3
+# 404 "<built-in>" 3
+# 1 "<command line>" 1
+# 1 "<built-in>" 2
+# 1 "pointerToAssembly.cpp" 2
+void foo() {
+    int i = 42;
+    int* p = &i;
+    int r1 = *p;
+    *p = 1;
+    int r2 = i;
+}

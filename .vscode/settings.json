@@ -1,0 +1,5 @@
+{
+    "cmake.sourceDirectory": "/home/takuto1127/mikanos/kernel",
+    "C_Cpp.default.compilerPath": "/usr/bin/clang++",
+    "makefile.makefilePath": "/home/takuto1127/mikanos/kernel/Makefile"
+}

@@ -1,0 +1,18 @@
+{
+    "configurations": [
+        {
+            "name": "Linux",
+            "includePath": [
+                "${workspaceFolder}/**"
+            ],
+            "defines": [],
+            "cStandard": "c17",
+            "cppStandard": "c++14",
+            "intelliSenseMode": "linux-clang-x64",
+            "compilerArgs": [
+                "$CPPFLAGS -O2 --target=x86_64-elf -fno-exceptions -ffreestanding -c"
+            ]
+        }
+    ],
+    "version": 4
+}
