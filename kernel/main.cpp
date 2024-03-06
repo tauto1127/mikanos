@@ -9,6 +9,25 @@
 
 #include "frame_buffer_config.hpp"
 
+const uint8_t kFontA[16] = {
+  0b00000000, //
+  0b00011000, //    **
+  0b00011000, //    **
+  0b00011000, //    **
+  0b00011000, //    **
+  0b00100100, //   *  *
+  0b00100100, //   *  *
+  0b00100100, //   *  *
+  0b00100100, //   *  *
+  0b01111110, //  ******
+  0b01000010, //  *    *
+  0b01000010, //  *    *
+  0b01000010, //  *    *
+  0b11100111, // ***  ***
+  0b00000000, //
+  0b00000000, //
+};
+
 struct PixelColor {//色の定義
   uint8_t r, g, b;
 };
@@ -76,6 +95,23 @@ void operator delete(void* obj) noexcept {
 char pixel_writer_buf[sizeof(RGBResv8BitPerColorPixelWriter)];
 PixelWriter* pixel_writer;
 
+void WriteAscii(PixelWriter& writer, int x, int y, char c, const PixelColor& color) {
+  if (c != 'A') {
+    return;
+  }
+  for (int dy = 0; dy < 16; ++dy) {
+    for (int dx = 0; dx < 8; ++dx) {
+      /*
+       * dxが0の時：左端
+       * dxが7の時：右端
+      */
+      if ((kFontA[dy] << dx) & 0x80u) { //0x80は10000000
+        writer.Write(x + dx, y + dy, color);
+      }
+    }
+  }
+}
+
 extern "C" void KernelMain(const FrameBufferConfig& frame_buffer_config) {
   switch (frame_buffer_config.pixel_format) {
     case kPixelRGBResv8BitPerColor:
@@ -97,6 +133,7 @@ extern "C" void KernelMain(const FrameBufferConfig& frame_buffer_config) {
       pixel_writer -> Write(x, y, {255, 255, 255});
     }
   }
+  WriteAscii(*pixel_writer, 50, 50, 'A', {0, 0, 0});//Aを描画
 
   while (1) __asm__("hlt");
 }
