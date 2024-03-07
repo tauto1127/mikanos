@@ -46,6 +46,14 @@ extern "C" void KernelMain(const FrameBufferConfig& frame_buffer_config) {
     }
   }
   WriteAscii(*pixel_writer, 50, 50, 'A', {0, 0, 0});//Aを描画
+  WriteAscii(*pixel_writer, 58, 50, 'k', {0, 0, 0});//Bを描画
+
+  int i = 0;
+  for (char c = '!'; c <= '~'; ++c, ++i) {
+    WriteAscii(*pixel_writer, 8 * i, 50, c, {0, 0, 0});
+  }
+
+  WriteString(*pixel_writer, 0, 66, "Hello, World!", {0, 0, 0});
 
   while (1) __asm__("hlt");
 }
