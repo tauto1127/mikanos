@@ -1,0 +1,6 @@
+{
+    "makefile.makePath": "/usr/bin/make",
+    "makefile.buildDirectory": "${workspaceFolder}",
+    "makefile.buildTarget": "all"
+}
+  
