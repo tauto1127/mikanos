@@ -14,6 +14,7 @@
 #include "frame_buffer_config.hpp"
 
 char console_buf[sizeof(Console)];
+/// @brief メインで使うコンソール
 Console* console;
 
 void* operator new(size_t size, void* buf) {
@@ -26,6 +27,21 @@ void operator delete(void* obj) noexcept {
 char pixel_writer_buf[sizeof(RGBResv8BitPerColorPixelWriter)];
 PixelWriter* pixel_writer;
 
+int printk(const char* format, ...) {
+  // 可変長引数を受け取るための変数
+  va_list ap;
+  int result;
+  char s[1024];
+
+  va_start(ap, format);
+  
+  //フォーマット文字列を解析し，sに文字列を書き込む
+  result = vsprintf(s, format, ap);
+  va_end(ap);
+
+  console->PutString(s);
+  return result;
+}
 
 
 extern "C" void KernelMain(const FrameBufferConfig& frame_buffer_config) {
@@ -65,8 +81,10 @@ extern "C" void KernelMain(const FrameBufferConfig& frame_buffer_config) {
   //WriteString(*pixel_writer, 0, 82, buf, {0, 255, 0});
 
   console = new(console_buf) Console{*pixel_writer, {0, 0, 0}, {255, 255, 0}};
-  console->PutString("Hello, World!\n, This is MikanOS!\n\nuooooooooooooooooooooooooooo\n uooooooooooooooooooooooooo\n    uoooooooooooooooooooooo\n      uoooooooooooooooooooo\n        uoooooooooooooooooo\n          uoooooooooooooooo\n            uoooooooooooooo\n              uoooooooooooo\n                uoooooooooo\n                  uoooooooo\n                    uoooooo\n                      uoooo\n                        uoo\n                          u\n");
-  console->PutString("Hello, World!\n, This is MikanOS!\n\nuooooooooooooooooooooooooooo\n uooooooooooooooooooooooooo\n    uoooooooooooooooooooooo\n      uoooooooooooooooooooo\n        uoooooooooooooooooo\n          uoooooooooooooooo\n            uoooooooooooooo\n              uoooooooooooo\n                uoooooooooo\n                  uoooooooo\n                    uoooooo\n                      uoooo\n                        uoo\n                          u\n");
-  console->PutString("Hello, World!\n, This is MikanOS!\n\nuooooooooooooooooooooooooooo\n uooooooooooooooooooooooooo\n    uoooooooooooooooooooooo\n      uoooooooooooooooooooo\n        uoooooooooooooooooo\n          uoooooooooooooooo\n            uoooooooooooooo\n              uoooooooooooo\n                uoooooooooo\n                  uoooooooo\n                    uoooooo\n                      uoooo\n                        uoo\n                          u\n");
+  for (int i = 0; i < 100; i++) {
+    int r = printk("printk: %d\n", i);
+    printk("result is %d\n", r);
+  }
   while (1) __asm__("hlt");
 }
+
