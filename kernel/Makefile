@@ -1,5 +1,5 @@
 TARGET = kernel.elf
-OBJS = main.o graphics.o font.o hankaku.o newlib_support.o
+OBJS = main.o graphics.o font.o hankaku.o newlib_support.o console.o
 DEPENDS = $(join $(dir $(OBJS)),$(addprefix .,$(notdir $(OBJS:.o=.d))))
 
 BASEDIR = $(HOME)/osbook/devenv/x86_64-elf
@@ -27,9 +27,13 @@ all: $(TARGET)
 .PHONY: clean
 clean:
 	rm -rf *.o
+	rm -rf *.d
 
 kernel.elf: $(OBJS) Makefile
 	ld.lld $(LDFLAGS) -o kernel.elf $(OBJS) -lc
+
+console.o: console.cpp
+	clang++ $(CPPFLAGS) $(CXXFLAGS) -c $<
 
 %.o: %.cpp Makefile
 	clang++ $(CPPFLAGS) $(CXXFLAGS) -c $<
